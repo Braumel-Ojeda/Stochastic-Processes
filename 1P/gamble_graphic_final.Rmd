@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Ahora, simulamos el proceso de ruina de un jugador.
+Now, we are going to simulate the gamblers ruin...
 
 ```{r pressure}
 # gamblersruin.R
