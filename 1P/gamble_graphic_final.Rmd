@@ -1,0 +1,56 @@
+---
+title: "Gamble evolution graphic"
+author: "Ojeda Contreras Braulio Melquisedec"
+date: "2022-10-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Ahora, simulamos el proceso de ruina de un jugador.
+
+```{r pressure}
+# gamblersruin.R
+# Example 1.11
+
+# gamble(k, n, p)
+  #   k: Gambler's initial state
+  #   n: Gambler plays until either $n or Ruin
+  #   p: Probability of winning $1 at each play
+  #   Function returns 1 if gambler is eventually ruined
+  #                    returns 0 if gambler eventually wins $n
+  
+gamble <- function(k,n,p) {
+  
+	stake <- k # Capital
+	stake_historic <- integer()
+	i <- 1
+	
+	while (stake > 0 & stake < n) {
+		bet <- sample(c(-1, 1), 1, prob = c(1 - p, p))
+		stake <- stake + bet
+		stake_historic[i] <- stake
+		i <- i + 1
+	}
+	
+	times_played <- length(stake_historic)
+  max_stake <- max(stake_historic)
+  cat("Times played: ", times_played, "\tMaximum acumulated stake: ", max_stake)
+  plot(stake_historic, xlab="times played", ylab= "acumulated stake", cex=1, type="l", xlim=c(0, times_played), ylim=c(0, max_stake), lty="solid", xaxp=c(0, times_played, 10), yaxp=c(0, max_stake, 10))
+	
+	if (stake == 0) 
+	   return(1) 
+	else 
+	  return(0)
+}   
+
+k <- 20 
+n <-  60  
+p <- 1/2  # Probability of winning each trial
+trials <- 10
+
+res <- replicate(trials, gamble(k, n, p))
+
+```
