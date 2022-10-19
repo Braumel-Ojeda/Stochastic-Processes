@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Now, we are going to simulate the gamblers ruin...
+Now, we are going to simulate the gambler's ruin...
 
 ```{r pressure}
 # gamblersruin.R
@@ -48,7 +48,7 @@ gamble <- function(k,n,p) {
 
 k <- 20 
 n <-  60  
-p <- 1/2  # Probability of winning each trial
+p <- 1/2
 trials <- 10
 
 res <- replicate(trials, gamble(k, n, p))

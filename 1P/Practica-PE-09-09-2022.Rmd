@@ -1,0 +1,183 @@
+---
+title: "Practica-09-09-2020"
+author: "ASA"
+date: "2022-09-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+En esta practica realizaremos algunas simulaciones sencillaz. 
+
+Primero simulemos el modelo SIR (susceptible-Infected-Recovered).
+
+```{r}
+
+ # SIR model
+ # SIR(S0, I0, p)
+   # S0 : Poblacion susceptible inicial, no infectada
+   # I0 : Poblacion infectada inicial, infectada
+   # p  : Probabilidad de que una persona sana sea infectada tras tener contacto con
+   #      alguien infectado
+
+
+SIR<- function(S0,I0,p){
+  
+  r1= list()
+  X= list()
+  Y= list()
+  W= list()
+  i=1
+  while (S0>0){
+    
+    C<- rbinom( S0, I0, p)
+    print(C)
+    I1<-length(C[C>0]) 
+    
+    print(I1)
+    S0<- S0-I1
+    
+    I0<- I0+I1
+    X[i]<- S0
+    Y[i]<- I0
+    W[i]<- I1
+    i=i+1
+    
+    
+    
+    
+  }
+  
+  r1<- list()
+  r1[[1]]<- X
+  r1[[2]]<- Y
+  r1[[3]]<- W
+  
+return(r1)  
+}
+
+Z<-SIR(160,3,0.004)
+
+X<- Z[[1]]
+Y<- Z[[2]]
+W<- Z[[3]]
+X<- unlist(X)
+Y<- unlist(Y)
+W<- unlist(W)
+#plot(X,cex=2)
+#plot(Y)
+plot(X, xlab="time (t).", ylab= "Susceptible number", 
+     cex=1, type="o", xlim=c(0,30), ylim=c(0,100) , lty="solid",xaxp=c(0,30,10),yaxp=c(0,100,100))
+
+plot(Y, xlab="time (t).", ylab= "Total Infected number", 
+     cex=1, type="o", xlim=c(0,30), ylim=c(0,100) , lty="solid",xaxp=c(0,30,10),yaxp=c(0,100,100))
+
+
+
+plot(W, xlab="time (t).", ylab= "Infected number", 
+     cex=1, type="o", xlim=c(0,30), ylim=c(0,100) , lty="solid",xaxp=c(0,30,10),yaxp=c(0,100,100))
+
+
+
+```
+
+Ahora, simulamos el proceso de ruina de un jugador.
+
+```{r pressure}
+# gamblersruin.R
+# Example 1.11
+
+# gamble(k, n, p)
+  #   k: Gambler's initial state
+  #   n: Gambler plays until either $n or Ruin
+  #   p: Probability of winning $1 at each play
+  #   Function returns 1 if gambler is eventually ruined
+  #                    returns 0 if gambler eventually wins $n
+  
+gamble <- function(k,n,p) {
+  
+	stake <- k # Capital 
+	
+	while (stake > 0 & stake < n) {
+		bet <- sample(c(-1,1),1,prob=c(1-p,p))
+		stake <- stake + bet
+	}
+	
+	if (stake == 0) 
+	   return(1) 
+	else 
+	  return(0)
+	}   
+
+k <- 20 
+n <-  60  
+p <- 1/2  # Probabilidad de ganar cada intento
+trials <- 1000 # Numero de intentos del juego
+simlist <- replicate(trials, gamble(k, n, p)) # LLevamos a cabo varios intentos del juego y guardamos los resultados en un vector
+mean(simlist) # Estimate of probability that gambler is ruined
+# For p = 0.5, exact probability is (n-k)/n 
+
+
+x<- 20  # Capital inicial 
+b<- 60  # Monto total
+p<- 0.5 # Probabilidad de victoria de cada juego
+trials<- 1000  # Numero de veces que se llevara a cabo la simulacion de ruina del                      jugador
+simlist<- replicate(trials,gamble(x,b,p)) # replicamos los juegos muchas veces
+mean(simlist)
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+# pizza.R
+# Example 1.25
+# Simulation of Bob's pizza probability
+
+trials <- 10000
+simlist <- numeric(trials)
+toppings <- c("pepper","pepperoni","pineapple","prawns","proscuitto")
+for (i in 1:trials) {
+pineapple <- 0
+pepperoni <- 0
+while (pineapple == 0) {
+   pick <- sample(toppings,1)
+   if (pick == "pepperoni") pepperoni <- pepperoni + 1
+   if (pick == "pineapple") pineapple <- 1
+   }	
+simlist[i] <- pepperoni
+}
+mean(simlist)
+
+
+```
+
+```{r}
+trials <- 100000
+simlist <- numeric(trials)
+for (i in 1:trials) {
+expense <- rexp(1,1/500)
+payout <- max(0, expense-100)
+simlist[i] <- payout}
+mean(simlist)
+sd(simlist)
+
+
+
+```
+
