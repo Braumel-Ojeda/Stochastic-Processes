@@ -1,0 +1,42 @@
+---
+title: "Example 1.21 Dobrow"
+author: "Ojeda Contreras Braulio Melquisedec"
+date: "2022-10-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Example 1.21
+```{r cars}
+flip_coins <- function(p) {
+  flips <- integer()
+  i <- 1
+  flag = FALSE
+  
+  while(flag == FALSE) {
+    flips[i] <- sample(c(0, 1), 1, prob = c(1 - p, p))
+    
+    if (i >= 2 && (flips[i] == 1 && flips[i - 1] == 1)) {
+      flag = TRUE
+      break
+    }
+    
+    i <- i + 1
+  }
+	
+  return (i)
+} 
+
+trials <- 1000000
+p <- 0.5
+res <- replicate(trials, flip_coins(p))
+hist(res, breaks = 25, freq = FALSE, main = "Histogram of needed flips to achieve 2 heads in a row")
+ari_mean_res <- mean(res)
+cat("The expectated value of the needed flips to achieve 2 heads in a row is", ari_mean_res)
+
+```
+
+

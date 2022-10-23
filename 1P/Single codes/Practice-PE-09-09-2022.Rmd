@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-En esta practica realizaremos algunas simulaciones sencillaz. 
+En esta practica realizaremos algunas simulaciones sencillas. 
 
 Primero simulemos el modelo SIR (susceptible-Infected-Recovered).
 
