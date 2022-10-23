@@ -1,5 +1,5 @@
 ---
-title: "Example 1.21 Dobrow"
+title: "Example 1.21 from Chapter 1 of Introduction to Stochastic Processes with R by Robert P. Dobrow"
 author: "Ojeda Contreras Braulio Melquisedec"
 date: "2022-10-21"
 output: html_document
@@ -9,8 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Example 1.21
-```{r cars}
+```{r}
 flip_coins <- function(p) {
   flips <- integer()
   i <- 1
