@@ -1,0 +1,90 @@
+---
+title: "Exercises from Chapter 2 of Introduction to Stochastic Processes with R by Robert P. Dobrow"
+author: "Ojeda Contreras Braulio Melquisedec"
+date: "2022-10-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 2.23) Simulate the first 20 letters (vowel/consonant) of the Pushkin poem Markov chain of Example 2.2
+
+```{r}
+simulate_pushkin_poem <- function(n) {
+  
+  consonants <- c('b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z')
+  vowels <- c('a', 'e', 'i', 'o', 'u')
+  
+  letters <- character()
+  
+  i <- 1
+  
+  init_prob_cons <- 11362 / 20000
+  vv_prob <- 1104 / 8638
+  cv_prob <- 7535 / 11362
+  vc_prob <- 7534 / 8638
+  cc_prob <- 3827 / 11362
+  
+  
+  init_letter <- sample(c(consonants, vowels), 1, prob = c(rep(init_prob_cons, length(consonants)), rep(1 - init_prob_cons, length(vowels))))
+  letters[i] <- init_letter
+  
+  if (n > 1) {
+    for (i in 2:n) {
+      prev_letter <- letters[i - 1]
+      
+      if (prev_letter %in% vowels) {
+        letter <- sample(c(consonants, vowels), 1, prob = c(rep(vc_prob, length(consonants)), rep(vv_prob, length(vowels))))
+      }
+      else {
+        letter <- sample(c(consonants, vowels), 1, prob = c(rep(cc_prob, length(consonants)), rep(cv_prob, length(vowels))))
+      }
+      letters[i] <- letter
+    }
+  }
+  return (letters)
+}
+
+first_20_letters <- simulate_pushkin_poem(n = 20)
+
+print(first_20_letters)
+
+```
+
+## 2.24) Simulate 50 steps of the random walk on the graph in Figure 2.1. Repeat the simulation 10 times. How many of your simulations end at vertex c? Compare with the exact long-term probability the walk visits c.
+
+```{r}
+markov <- function(init,mat,n,labels) { 
+  if (missing(labels)) labels <- 1:length(init)
+  simlist <- numeric(n+1)
+  states <- 1:length(init)
+  simlist[1] <- sample(states,1,prob=init)
+  for (i in 2:(n+1)) 
+  { simlist[i] <- sample(states,1,prob=mat[simlist[i-1],]) }
+  labels[simlist]
+}
+
+mat = matrix(c(0, 1, 0, 0, 0, 0,
+               1/4, 0, 1/4, 1/4, 1/4, 0,
+               0, 1/4, 0, 1/4, 1/4, 1/4,
+               0, 1/4, 1/4, 0, 1/4, 1/4,
+               0, 1/3, 1/3, 1/3, 0, 0,
+               0, 0, 1/2, 1/2, 0, 0), ncol = 6, byrow = TRUE)
+
+init = c(1, 0, 0, 0, 0, 0)
+n = 50
+labels = c('a', 'b', 'c', 'd', 'e', 'f')
+print(mat)
+
+print(markov(mat = mat, init = init, n = n, labels = labels))
+
+
+```
+
+
+
+
+
+
