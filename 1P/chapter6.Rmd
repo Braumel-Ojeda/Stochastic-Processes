@@ -1,0 +1,38 @@
+---
+title: "Exercises from Chapter 6 of Introduction to Stochastic Processes with R by Robert P. Dobrow"
+author: "Ojeda Contreras Braulio Melquisedec"
+date: "2022-11-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 6.41) Goals occur in a soccer game according to a Poisson process. The average total number of goals scored for a 90-minute match is 2.68. Assume that two teams are evenlymatched. Use simulation to estimate the probability both teams will score the same number of goals. Compare with the theoretical result.
+
+```{r}
+trials <- 1000000
+team1 <- rpois(trials, lambda =2.68)
+hist(team1, freq = FALSE)
+team2 <- rpois(trials, lambda = 2.68)
+hist(team2, freq = FALSE)
+
+score_same_goals = length(team1[team1 == team2])
+prob_ssg = score_same_goals / trials
+cat("The probability that both teams score the same number of goals is", prob_ssg)
+```
+
+## Starting at noon, diners arrive at a restaurant according to a Poisson process at the rate of five customers per minute. The time each customer spends eating at the restaurant has an exponential distribution with mean 40 minutes, independent of other customers and independent of arrival times. Find the distribution, as well as the mean and variance, of the number of diners in the restaurant at 2 p.m.
+
+```{r}
+
+
+
+```
+
+
+
+
+
+

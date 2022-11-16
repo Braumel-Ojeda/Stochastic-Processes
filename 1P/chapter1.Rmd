@@ -1,8 +1,13 @@
 ---
-title: "Exercises from Chapter 1 of Introduction to Stochastic Processes with R by Robert P. Dobrow"
+title: Exercises from Chapter 1 of Introduction to Stochastic Processes with R by
+  Robert P. Dobrow
 author: "Ojeda Contreras Braulio Melquisedec"
 date: "2022-10-15"
-output: html_document
+output:
+  pdf_document:
+    latex_engine:
+      xelatex
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -72,10 +77,14 @@ pick_ace_std_deck <- function() {
   # j: jack
   # q: queen
   # k: king
-  deck <- c("a_c", "2_c", "3_c", "4_c", "5_c", "6_c", "7_c", "8_c", "9_c", "10_c", "j_c", "q_c", "k_c",
-                            "a_d", "2_d", "3_d", "4_d", "5_d", "6_d", "7_d", "8_d", "9_d", "10_d", "j_d", "q_d", "k_d",
-                            "a_h", "2_h", "3_h", "4_h", "5_h", "6_h", "7_h", "8_h", "9_h", "10_h", "j_h", "q_h", "k_h",
-                            "a_s", "2_s", "3_s", "4_s", "5_s", "6_s", "7_s", "8_s", "9_s", "10_s", "j_s", "q_s", "k_s")
+  deck <- c("a_c", "2_c", "3_c", "4_c", "5_c", "6_c", "7_c", "8_c", "9_c", "10_c",
+            "j_c", "q_c", "k_c",
+            "a_d", "2_d", "3_d", "4_d", "5_d", "6_d", "7_d", "8_d", "9_d", "10_d",
+            "j_d", "q_d", "k_d",
+            "a_h", "2_h", "3_h", "4_h", "5_h", "6_h", "7_h", "8_h", "9_h", "10_h",
+            "j_h", "q_h", "k_h",
+            "a_s", "2_s", "3_s", "4_s", "5_s", "6_s", "7_s", "8_s", "9_s", "10_s",
+            "j_s", "q_s", "k_s")
   total_cards <- length(deck)
   picked_cards <- character()
   ace <- FALSE
@@ -175,15 +184,17 @@ gamble <- function(k, n, p, goal) {
 		bet <- sample(c(-1, 1), 1, prob = c(1 - p, p))
 		stake <- stake + bet
 		stake_historic[i] <- stake 
-		if (stake == 100)
+		if (stake == goal)
 		  reach_goal = TRUE
 		i <- i + 1
 	}
 	
 	times_played <- length(stake_historic)
   max_stake <- max(stake_historic)
-  cat("\n\nTimes played: ", times_played, "\tMaximum acumulated stake: ", max_stake)
-  plot(stake_historic, xlab="times played", ylab= "acumulated stake", cex=1, type="l", xlim=c(0, times_played), ylim=c(0, max_stake), lty="solid", xaxp=c(0, times_played, 10), yaxp=c(0, max_stake, 10))
+  cat("Times played: ", times_played, "\tMaximum acumulated stake: ", max_stake)
+  plot(stake_historic, xlab="times played", ylab= "acumulated stake", cex=1, type="l",
+       xlim=c(0, times_played), ylim=c(0, max_stake), lty="solid",
+       xaxp=c(0, times_played, 10), yaxp=c(0, max_stake, 10))
 	
 	if (stake == 0) 
 	   return(list(1, reach_goal)) 
@@ -201,7 +212,8 @@ res <- replicate(trials, gamble(k, n, p, goal))
 res_reach_goal <- res[2, res[1,] == 1 & res[2,] == TRUE]
 prob_reach_goal <- length(res_reach_goal) / trials
 
-cat("The probability of reaching the goal of $", goal, "before lossing everything is", prob_reach_goal, ", with p =", p)
+cat("The probability of reaching the goal of $", goal,
+    "before lossing everything is", prob_reach_goal, ", with p =", p)
 ```
 
 
@@ -218,7 +230,8 @@ res <- replicate(trials, gamble(k, n, p, goal))
 res_reach_goal <- res[2, res[1,] == 1 & res[2,] == TRUE]
 prob_reach_goal <- length(res_reach_goal) / trials
 
-cat("\n\n\nThe probability of reaching the goal of $", goal, "before lossing everything is", prob_reach_goal, ", with p =", p)
+cat("The probability of reaching the goal of $", goal,
+    "before lossing everything is", prob_reach_goal, ", with p =", p)
 ```
 
 ## 1.36) See Example 1.2 and the script file ReedFrost.R. Observe the effect on the course of the disease by changing the initial values for the number of people susceptible and infected. How does increasing the number of infected people affect the duration of the disease?
@@ -292,7 +305,7 @@ With the previous graphics we can remark that the more the number of infected pe
 
 ## 1.37) Simulate the results of Exercise 1.28. Estimate the mean and variance of the number of accidents per day.
 
-So, exercise 1.28 says the following: *On any day, the number of accidents on the highway has a Poisson distribution with parameter Λ. The parameter Λ varies from day to day and is itself a random variable. Find the mean and variance of the number of accidents per day when Λ is uniformly distributed on (0, 3).*
+So, exercise 1.28 says the following: *On any day, the number of accidents on the highway has a Poisson distribution with parameter $Λ. The parameter Λ varies from day to day and is itself a random variable. Find the mean and variance of the number of accidents per day when Λ is uniformly distributed on (0, 3).*
 
 Therefore, we are going to use simulate an uniform distribution with parameters a=0 and b=3 within the function runif given by R. And then use that result on the function rpois in order to make random generation of the poisson distribution.
 
