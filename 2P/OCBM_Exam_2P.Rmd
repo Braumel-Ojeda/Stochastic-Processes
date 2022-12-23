@@ -36,7 +36,7 @@ cat("La media de puntos que contiene es", mean(sim), "\n")
 cat("La varianza de puntos que contiene es", var(sim), "\n")
 
 ```
-## Inversionistas adquieren 1k dólares en bonos en tiempos aleatorios de un proceso de Poisson con parámetro 𝜆. Si la tasa de interés es r entonces el valor esperado del valor total presente de una inversión adquirida al tiempo t es $1000e^{−rt}$. Simule el valor total presente de los bonos si la tasa de interés r es del 4%, el parámetro del processo de Poisson es $𝜆 = 50$, y $t = 10$.
+## Inversionistas adquieren 1k dólares en bonos en tiempos aleatorios de un proceso de Poisson con parámetro $𝜆$. Si la tasa de interés es $r$ entonces el valor esperado del valor total presente de una inversión adquirida al tiempo $t$ es $1000e^{−rt}$. Simule el valor total presente de los bonos si la tasa de interés $r$ es del 4%, el parámetro del processo de Poisson es $𝜆 = 50$, y $t = 10$.
 
 ```{r}
 

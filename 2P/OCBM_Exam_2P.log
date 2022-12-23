@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.15)  22 DEC 2022 14:54
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.15)  23 DEC 2022 02:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -676,7 +676,6 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 126.
-Missing character: There is no 𝜆 (U+1D706) in font [lmroman12-bold]:mapping=tex-text;!
 [1
 
 ] [2] (./OCBM_Exam_2P.aux)
@@ -689,7 +688,7 @@ Package rerunfilecheck Info: File `OCBM_Exam_2P.out' has not changed.
 Here is how much of TeX's memory you used:
  16762 strings out of 477643
  311926 string characters out of 5839642
- 811034 words of memory out of 5000000
+ 811098 words of memory out of 5000000
  37729 multiletter control sequences out of 15000+600000
  472825 words of font info for 58 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
