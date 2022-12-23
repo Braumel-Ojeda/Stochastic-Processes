@@ -1,0 +1,56 @@
+---
+title: Examen 2o Parcial
+author: "Ojeda Contreras Braulio Melquisedec"
+date: "2022-12-22"
+output:
+  pdf_document:
+    latex_engine:
+      xelatex
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Simule un proceso de Poisson espacial con $𝜆 = 10$, sobre una caja de volumen 8 con vértices en los puntos (±1,±1,±1). Estime la media y la varianza del número de puntos en la bola centrada en el origen de radio 1.
+
+```{r}
+
+trials <- 100000
+sim <- numeric(trials)
+lambda <- 10
+volume <- 8
+for (k in 1:trials) {
+  npoints <- rpois(1, lambda * volume)
+  points <- matrix(runif(npoints*3, -1, 1), ncol = 3)
+  g <- 0
+  for (i in 1:npoints) {
+    g <- g + if ( (sum(points[i,]^2)) < 1 ) 1 else 0
+  }
+  sim[k] <- g
+}
+
+cat("Para la bola de centrada en el origen de radio 1\n")
+cat("La media de puntos que contiene es", mean(sim), "\n")
+cat("La varianza de puntos que contiene es", var(sim), "\n")
+
+```
+## Inversionistas adquieren 1k dólares en bonos en tiempos aleatorios de un proceso de Poisson con parámetro 𝜆. Si la tasa de interés es r entonces el valor esperado del valor total presente de una inversión adquirida al tiempo t es $1000e^{−rt}$. Simule el valor total presente de los bonos si la tasa de interés r es del 4%, el parámetro del processo de Poisson es $𝜆 = 50$, y $t = 10$.
+
+```{r}
+
+trials <- 100000
+sim <- numeric(trials)
+lambda <- 50
+t <- 10
+price <- 1000
+r <- 0.04
+for (k in 1:trials) {
+  totalpv <- sum(price * lambda * (1 - exp(-r * t)) / r)
+  sim[k] <- totalpv
+}
+
+cat("La media del valor total presente de los bonos adquiridos es", mean(sim), "\n")
+
+```

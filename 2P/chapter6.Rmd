@@ -1,0 +1,122 @@
+---
+title: Exercises from Chapter 6 of Introduction to Stochastic Processes with R by
+  Robert P. Dobrow
+author: "Ojeda Contreras Braulio Melquisedec"
+date: "2022-11-11"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 6.41) Goals occur in a soccer game according to a Poisson process. The average total number of goals scored for a 90-minute match is 2.68. Assume that two teams are evenlymatched. Use simulation to estimate the probability both teams will score the same number of goals. Compare with the theoretical result.
+
+```{r}
+trials <- 1000000
+lambda <- 2.68
+team1 <- rpois(trials, lambda / 2)
+team2 <- rpois(trials, lambda / 2)
+ssg = length(team1[team1 == team2]) 
+prob_ssg = ssg / trials
+
+cat("The probability that both teams score the same number of goals is", prob_ssg)
+```
+
+## 6.42) Simulate the restaurant results of Exercise 6.12: *Starting at noon, diners arrive at a restaurant according to a Poisson process at the rate of five customers per minute. The time each customer spends eating at the restaurant has an exponential distribution with mean 40 minutes, independent of other customers and independent of arrival times. Find the distribution, as well as the mean and variance, of the number of diners in the restaurant at 2 p.m.*
+
+```{r}
+diners_2pm <- numeric()
+trials <- 10000
+for (i in 1:trials) {
+  t <- 120
+  lambda <- 5 * t
+  no_diners <- rpois(1, lambda)
+  arrival_times <- sort(runif(no_diners, 0, t))
+  #print(arrival_times)
+  rate_exp <- 1 / 40
+  total_time <- arrival_times + rexp(arrival_times, rate_exp)
+  #print(total_time)
+  diners_2pm[i] <- sum(total_time >= t)
+}
+
+cat("The mean of the number of diners in the restaurant at 2pm is", mean(diners_2pm), "\n")
+cat("The variance of the number of diners in the restaurant at 2pm is", var(diners_2pm))
+
+```
+
+## Simulate a spatial Poisson process with 𝜆 = 10 on the box of volume 8 with vertices at the 8 points (±1,±1,±1). Estimate the mean and variance of the number of points in the ball centered at the origin of radius 1. Compare with the exact values.
+
+```{r}
+
+trials <- 10000
+sim <- numeric(trials)
+lambda <- 10
+volume <- 8
+for (k in 1:trials) {
+  npoints <- rpois(1, lambda * volume)
+  points <- matrix(runif(npoints*3, -1, 1), ncol = 3)
+  g <- 0
+  for (i in 1:npoints) {
+    g <- g + if ( (sum(points[i,]^2)) < 1 ) 1 else 0
+  }
+  sim[k] <- g
+}
+
+cat("The mean of the number of points in the ball centered at the origin is", mean(sim), "\n")
+cat("The variance of the number of points in the ball centered at the origin is", var(sim), "\n")
+
+```
+## See Exercise 6.32. Simulate the expected total present value of the bonds if the interest rate is 4%, the Poisson parameter is 𝜆 = 50, and t = 10. Compare with the exact value. *Investors purchase $1,000 bonds at the random times of a Poisson process with parameter 𝜆. If the interest rate is r, then the present value of an investment purchased at time t is 1000e−rt. Show that the expected total present value of the bonds purchased by time t is 1000𝜆(1 − e−rt)/r.*
+
+```{r}
+
+trials <- 10000
+sim <- numeric(trials)
+lambda <- 50
+t <- 10
+price <- 1000
+r <- 0.04
+for (k in 1:trials) {
+  totalpv <- sum(price * lambda * (1 - exp(-r * t)) / r)
+  sim[k] <- totalpv
+}
+
+cat("The mean of total present value of the bonds purchased is", mean(sim), "\n")
+
+```
+
+## Simulate the birthday problem of Exercise 6.19. *Members of a large audience are asked to state their birthdays, one at a time. How many people will be asked before three persons are found to have the same birthday? Use embedding to estimate the expected number. You will need to use numerical methods to evaluate the resulting integral.*
+
+```{r}
+
+trials <- 100000
+sim <- numeric(trials)
+
+for (i in 1:trials) {
+  flag <- FALSE
+  n <- 0
+  vect <- numeric(365)
+  
+  while (flag == FALSE) {
+    birthday <- runif(1, 1, 365)
+    vect[birthday] <- vect[birthday] + 1
+    n <- n + 1
+    
+    if (length(vect[vect >= 3]) > 0) {
+      flag <- TRUE
+    }
+  }
+  
+  sim[i] <- n
+}
+
+cat("The mean of the number of persons that have to be asked before three persons are found to have the same birthday is", mean(sim), "\n")
+
+```
+
+
+
+
