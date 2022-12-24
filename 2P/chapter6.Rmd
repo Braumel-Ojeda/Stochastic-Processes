@@ -4,7 +4,9 @@ title: Exercises from Chapter 6 of Introduction to Stochastic Processes with R b
 author: "Ojeda Contreras Braulio Melquisedec"
 date: "2022-11-11"
 output:
-  pdf_document: default
+  pdf_document:
+    latex_engine:
+      xelatex
   html_document: default
 ---
 
@@ -42,49 +44,60 @@ for (i in 1:trials) {
   diners_2pm[i] <- sum(total_time >= t)
 }
 
-cat("The mean of the number of diners in the restaurant at 2pm is", mean(diners_2pm), "\n")
-cat("The variance of the number of diners in the restaurant at 2pm is", var(diners_2pm))
+cat("The mean of the number of diners in the restaurant at 2pm is", mean(diners_2pm),
+    "\nThe variance of the number of diners in the restaurant at 2pm is", var(diners_2pm))
 
 ```
 
-## Simulate a spatial Poisson process with 𝜆 = 10 on the box of volume 8 with vertices at the 8 points (±1,±1,±1). Estimate the mean and variance of the number of points in the ball centered at the origin of radius 1. Compare with the exact values.
+## Simulate a spatial Poisson process with $𝜆 = 10$ on the box of volume 8 with vertices at the 8 points (±1,±1,±1). Estimate the mean and variance of the number of points in the ball centered at the origin of radius 1. Compare with the exact values.
 
 ```{r}
 
-trials <- 10000
-sim <- numeric(trials)
+trials <- 100000
+res <- numeric(trials)
 lambda <- 10
 volume <- 8
+no_dimension <- 3
 for (k in 1:trials) {
   npoints <- rpois(1, lambda * volume)
-  points <- matrix(runif(npoints*3, -1, 1), ncol = 3)
-  g <- 0
+  points <- matrix(runif(npoints * no_dimension, -1, 1), ncol = no_dimension)
+  points_sphere <- 0
   for (i in 1:npoints) {
-    g <- g + if ( (sum(points[i,]^2)) < 1 ) 1 else 0
+    points_sphere <- points_sphere + if ( (sum(points[i,]^2)) < 1 ) 1 else 0
   }
-  sim[k] <- g
+  res[k] <- points_sphere
 }
 
-cat("The mean of the number of points in the ball centered at the origin is", mean(sim), "\n")
-cat("The variance of the number of points in the ball centered at the origin is", var(sim), "\n")
+cat("For the ball centered at the origin of radius 1\n
+    The mean of points inside it is", mean(res), "\n
+    The variance of points inside it is", var(res), "\n")
 
 ```
-## See Exercise 6.32. Simulate the expected total present value of the bonds if the interest rate is 4%, the Poisson parameter is 𝜆 = 50, and t = 10. Compare with the exact value. *Investors purchase $1,000 bonds at the random times of a Poisson process with parameter 𝜆. If the interest rate is r, then the present value of an investment purchased at time t is 1000e−rt. Show that the expected total present value of the bonds purchased by time t is 1000𝜆(1 − e−rt)/r.*
+## See Exercise 6.32. Simulate the expected total present value of the bonds if the interest rate is 4%, the Poisson parameter is $𝜆 = 50$, and $t = 10$. Compare with the exact value. *Investors purchase $1,000 bonds at the random times of a Poisson process with parameter $𝜆$. If the interest rate is $r$, then the present value of an investment purchased at time $t$ is $1000e^{−rt}$. Show that the expected total present value of the bonds purchased by time $t$ is $1000𝜆(1 − e−^{rt})/r$.*
 
 ```{r}
 
-trials <- 10000
-sim <- numeric(trials)
-lambda <- 50
-t <- 10
+trials <- 100000
+res <- numeric(trials)
 price <- 1000
 r <- 0.04
+lambda <- 50
+t <- 10
+
 for (k in 1:trials) {
-  totalpv <- sum(price * lambda * (1 - exp(-r * t)) / r)
-  sim[k] <- totalpv
+  nbonds <- rpois(1, lambda * t)
+  times_ordered <- sort(runif(nbonds, 0, t))
+  bonds <- numeric(length(times_ordered))
+  
+  for (i in 1:length(times_ordered)) {
+    bonds[i] <- price * exp(-r * times_ordered[i])
+  }
+  
+  total_present_value <- sum(bonds)
+  res[k] <- total_present_value
 }
 
-cat("The mean of total present value of the bonds purchased is", mean(sim), "\n")
+cat("The mean of total present value of the bonds purchased is", mean(res), "\n")
 
 ```
 
@@ -93,7 +106,7 @@ cat("The mean of total present value of the bonds purchased is", mean(sim), "\n"
 ```{r}
 
 trials <- 100000
-sim <- numeric(trials)
+res <- numeric(trials)
 
 for (i in 1:trials) {
   flag <- FALSE
@@ -104,19 +117,12 @@ for (i in 1:trials) {
     birthday <- runif(1, 1, 365)
     vect[birthday] <- vect[birthday] + 1
     n <- n + 1
-    
-    if (length(vect[vect >= 3]) > 0) {
+    if (length(vect[vect >= 3]) > 0)
       flag <- TRUE
-    }
   }
-  
-  sim[i] <- n
+  res[i] <- n
 }
 
-cat("The mean of the number of persons that have to be asked before three persons are found to have the same birthday is", mean(sim), "\n")
+cat("The mean of the number of persons for this problem is", mean(res))
 
 ```
-
-
-
-
