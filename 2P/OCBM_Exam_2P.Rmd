@@ -13,44 +13,54 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Simule un proceso de Poisson espacial con $𝜆 = 10$, sobre una caja de volumen 8 con vértices en los puntos (±1,±1,±1). Estime la media y la varianza del número de puntos en la bola centrada en el origen de radio 1.
+## 4) Simule un proceso de Poisson espacial con $𝜆 = 10$, sobre una caja de volumen 8 con vértices en los puntos (±1,±1,±1). Estime la media y la varianza del número de puntos en la bola centrada en el origen de radio 1.
 
 ```{r}
 
 trials <- 100000
-sim <- numeric(trials)
+res <- numeric(trials)
 lambda <- 10
 volume <- 8
+no_dimension <- 3
 for (k in 1:trials) {
   npoints <- rpois(1, lambda * volume)
-  points <- matrix(runif(npoints*3, -1, 1), ncol = 3)
-  g <- 0
+  points <- matrix(runif(npoints * no_dimension, -1, 1), ncol = no_dimension)
+  points_sphere <- 0
   for (i in 1:npoints) {
-    g <- g + if ( (sum(points[i,]^2)) < 1 ) 1 else 0
+    points_sphere <- points_sphere + if ( (sum(points[i,]^2)) < 1 ) 1 else 0
   }
-  sim[k] <- g
+  res[k] <- points_sphere
 }
 
-cat("Para la bola de centrada en el origen de radio 1\n")
-cat("La media de puntos que contiene es", mean(sim), "\n")
-cat("La varianza de puntos que contiene es", var(sim), "\n")
+cat("Para la bola de centrada en el origen de radio 1\n
+    La media de puntos que contiene es", mean(res), "\n
+    La varianza de puntos que contiene es", var(res), "\n")
 
 ```
-## Inversionistas adquieren 1k dólares en bonos en tiempos aleatorios de un proceso de Poisson con parámetro $𝜆$. Si la tasa de interés es $r$ entonces el valor esperado del valor total presente de una inversión adquirida al tiempo $t$ es $1000e^{−rt}$. Simule el valor total presente de los bonos si la tasa de interés $r$ es del 4%, el parámetro del processo de Poisson es $𝜆 = 50$, y $t = 10$.
+## 5) Inversionistas adquieren bonos de 1k dólares bonos en tiempos aleatorios dados por un proceso de Poisson con parámetro $𝜆$. Si la tasa de interés es $r$, entonces el valor total presente de una inversión adquirida al tiempo $t$ es $1000e^{−rt}$. Simule la esperanza del valor total presente de los bonos si la tasa de interés $r$ es del 4%, el parámetro del processo de Poisson es $𝜆 = 50$, y $t = 10$.
 
 ```{r}
 
 trials <- 100000
-sim <- numeric(trials)
-lambda <- 50
-t <- 10
+res <- numeric(trials)
 price <- 1000
 r <- 0.04
+lambda <- 50
+t <- 10
+
 for (k in 1:trials) {
-  totalpv <- sum(price * lambda * (1 - exp(-r * t)) / r)
-  sim[k] <- totalpv
+  nbonds <- rpois(1, lambda * t)
+  times_ordered <- sort(runif(nbonds, 0, t))
+  bonds <- numeric(length(times_ordered))
+  
+  for (i in 1:length(times_ordered)) {
+    bonds[i] <- price * exp(-r * times_ordered[i])
+  }
+  
+  total_present_value <- sum(bonds)
+  res[k] <- total_present_value
 }
 
-cat("La media del valor total presente de los bonos adquiridos es", mean(sim), "\n")
+cat("La esperanza del valor total presente de los bonos adquiridos es", mean(res), "\n")
 
 ```

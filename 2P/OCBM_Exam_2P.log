@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.15)  23 DEC 2022 02:59
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.11.15)  24 DEC 2022 20:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -675,7 +675,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 112.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 126.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 127.
 [1
 
 ] [2] (./OCBM_Exam_2P.aux)
@@ -683,15 +683,15 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `OCBM_Exam_2P.out' has not changed.
-(rerunfilecheck)             Checksum: 999FC15E4068C4DDF205860E16840873;3466.
+(rerunfilecheck)             Checksum: F0582120C442090C7E0C2F9A6B94A62B;3556.
  ) 
 Here is how much of TeX's memory you used:
  16762 strings out of 477643
- 311926 string characters out of 5839642
- 811098 words of memory out of 5000000
+ 311934 string characters out of 5839642
+ 812269 words of memory out of 5000000
  37729 multiletter control sequences out of 15000+600000
  472825 words of font info for 58 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 86i,6n,121p,2245b,349s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,6n,121p,2314b,360s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on OCBM_Exam_2P.pdf (2 pages).
